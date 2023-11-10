@@ -24,5 +24,5 @@ app.post('/login', (req, res) => {
 app.use(express.static('public'));
 
 app.listen(port, () => {
-    console.log(`Server is listening at http://localhost:${port}`);
+    console.log(`Server is listening at http://localhost:${80}`);
 });
