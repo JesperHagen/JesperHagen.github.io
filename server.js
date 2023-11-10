@@ -1,28 +1,29 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 const app = express();
 const port = 3000;
 
-// In-memory storage for credentials (replace this with a database in a real-world scenario)
-const storedCredentials = {
-    username: 'your_username',
-    password: 'your_password'
-};
-
 app.use(bodyParser.json());
 
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
+app.post('/writeToFile', (req, res) => {
+    const { input } = req.body;
 
-    if (username === storedCredentials.username && password === storedCredentials.password) {
-        res.json({ success: true });
-    } else {
-        res.json({ success: false });
-    }
+    // Append the input to a text file (example.txt)
+    fs.appendFile('example.txt', input + '\n', (err) => {
+        if (err) {
+            console.error('Error writing to file:', err);
+            res.status(500).json({ success: false, error: 'Error writing to file' });
+        } else {
+            console.log('Input written to file:', input);
+            res.json({ success: true });
+        }
+    });
 });
 
 app.use(express.static('public'));
 
 app.listen(port, () => {
-    console.log(`Server is listening at http://localhost:${80}`);
+    console.log(`Server is listening at http://localhost:${port}`);
 });
+
