@@ -3,84 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 16px;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #4caf50;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-    </style>
+    <title>Write to Text File</title>
 </head>
 <body>
-    <form id="loginForm">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="button" onclick="login()">Login</button>
-    </form>
-
+    <input type="text" id="textInput" onkeypress="handleKeyPress(event)">
     <script>
-        function login() {
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                var inputValue = document.getElementById('textInput').value;
+                
+                // Send the input value to the server
+                fetch('/writeToFile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ input: inputValue })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
 
-            // Send the credentials to the server for validation
-            fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Login successful! Welcome, " + username + "!");
-                } else {
-                    alert("Login failed. Please check your username and password.");
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                // Clear the text input
+                document.getElementById('textInput').value = '';
+            }
         }
     </script>
 </body>
 </html>
+
