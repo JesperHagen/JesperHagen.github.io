@@ -58,10 +58,28 @@
 
     <script>
         function login() {
-            // In a real-world scenario, you would perform server-side validation here
-            // For simplicity, this example just shows an alert with the entered username
             var username = document.getElementById("username").value;
-            alert("Login successful! Welcome, " + username + "!");
+            var password = document.getElementById("password").value;
+
+            // Send the credentials to the server for validation
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Login successful! Welcome, " + username + "!");
+                } else {
+                    alert("Login failed. Please check your username and password.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
     </script>
 </body>
