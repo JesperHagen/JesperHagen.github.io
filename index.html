@@ -3,39 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Write to Text File</title>
+    <title>Form Submission</title>
 </head>
 <body>
-    <input type="text" id="textInput" onkeypress="handleKeyPress(event)">
-    <script>
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                var inputValue = document.getElementById('textInput').value;
-                
-                // Send the input value to the server
-                fetch('/writeToFile', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ input: inputValue })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+    <form action="https://docs.google.com/forms/d/e/1BywlawccvTQt4IAQuwB6nCkkazUiw-yZrQdDfamza2w/formResponse" method="post">
+        <!-- Replace "YOUR_FORM_ID" with the actual form ID -->
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="entry.123456789" required>
+        
+        <label for="message">Message:</label>
+        <textarea id="message" name="entry.555555555" rows="4" required></textarea>
 
-                // Clear the text input
-                document.getElementById('textInput').value = '';
-            }
-        }
-    </script>
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>
-
-</body>
-</html>
-
